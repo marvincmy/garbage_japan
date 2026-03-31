@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fukuoka City Garbage Sorter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="app-header">
+        <h1>Fukuoka City Garbage Sorter</h1>
+        <p>Point your camera at trash and confirm the suggested sorting category.</p>
+      </header>
+
+      <main class="app-layout" aria-live="polite">
+        <section class="camera-panel" aria-label="Camera preview">
+          <div id="webcam-container">
+            <div id="no-garbage-overlay" aria-hidden="true">No Garbage Detected</div>
+          </div>
+        </section>
+
+        <section class="bins-panel" aria-label="Garbage categories">
+          <h2>Garbage Types</h2>
+          <div class="bins-grid">
+            <button id="bin-burnable" class="bin" data-type="burnable" type="button" aria-label="Burnable - 燃えるごみ">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                <rect x="18" y="20" width="28" height="36" rx="4" />
+                <rect x="14" y="14" width="36" height="6" rx="3" />
+                <line x1="26" y1="28" x2="26" y2="48" />
+                <line x1="32" y1="28" x2="32" y2="48" />
+                <line x1="38" y1="28" x2="38" y2="48" />
+                <path d="M32 10 C28 7, 27 4, 30 2 C33 4, 35 7, 32 10 Z" />
+              </svg>
+              <span class="en">Burnable</span>
+              <span class="jp">燃えるごみ</span>
+            </button>
+
+            <button id="bin-non-burnable" class="bin" data-type="non-burnable" type="button" aria-label="Non-burnable - 燃えないごみ">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                <rect x="18" y="20" width="28" height="36" rx="4" />
+                <rect x="14" y="14" width="36" height="6" rx="3" />
+                <line x1="26" y1="28" x2="26" y2="48" />
+                <line x1="32" y1="28" x2="32" y2="48" />
+                <line x1="38" y1="28" x2="38" y2="48" />
+                <circle cx="32" cy="8" r="4" />
+              </svg>
+              <span class="en">Non-burnable</span>
+              <span class="jp">燃えないごみ</span>
+            </button>
+
+            <button id="bin-glass-pet" class="bin" data-type="glass-pet" type="button" aria-label="Glass and PET - 空きびん・ペットボトル">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                <path d="M24 14 H30 V22 C30 24, 28 26, 28 28 V54 C28 57, 26 59, 23 59 H17 C14 59, 12 57, 12 54 V28 C12 26, 10 24, 10 22 V14 H16" />
+                <path d="M44 10 H50 V20 C50 23, 46 25, 46 29 V54 C46 57, 44 59, 41 59 H37 C34 59, 32 57, 32 54 V29 C32 25, 28 23, 28 20 V10 H34" />
+              </svg>
+              <span class="en">Glass &amp; PET</span>
+              <span class="jp">空きびん・ペットボトル</span>
+            </button>
+
+            <button id="bin-oversized" class="bin" data-type="oversized" type="button" aria-label="Oversized - 粗大ごみ">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                <rect x="8" y="24" width="48" height="22" rx="3" />
+                <line x1="8" y1="35" x2="56" y2="35" />
+                <circle cx="18" cy="50" r="4" />
+                <circle cx="46" cy="50" r="4" />
+                <path d="M20 20 V12 H44 V20" />
+              </svg>
+              <span class="en">Oversized</span>
+              <span class="jp">粗大ごみ</span>
+            </button>
+
+            <button id="bin-paper" class="bin" data-type="paper" type="button" aria-label="Paper - 古紙">
+              <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+                <rect x="16" y="16" width="30" height="38" rx="3" />
+                <path d="M26 16 V8 H54 V46 H46" />
+                <line x1="22" y1="28" x2="40" y2="28" />
+                <line x1="22" y1="36" x2="40" y2="36" />
+                <line x1="22" y1="44" x2="34" y2="44" />
+              </svg>
+              <span class="en">Paper</span>
+              <span class="jp">古紙</span>
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

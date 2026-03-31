@@ -1,0 +1,126 @@
+const URL = 'YOUR_TEACHABLE_MACHINE_URL_HERE/';
+
+let model;
+let webcam;
+let maxPredictions;
+const MIN_CONFIDENCE = 0.8;
+
+const BIN_ID_BY_CLASS = {
+  Burnable: 'bin-burnable',
+  'Non-burnable': 'bin-non-burnable',
+  'Glass & PET': 'bin-glass-pet',
+  Oversized: 'bin-oversized',
+  Paper: 'bin-paper',
+};
+
+const NO_GARBAGE_CLASSES = new Set(['no garbage', 'human faces']);
+
+const bins = Array.from(document.querySelectorAll('.bin'));
+const overlay = document.getElementById('no-garbage-overlay');
+const webcamContainer = document.getElementById('webcam-container');
+let activeBinId = null;
+let overlayFlashing = false;
+
+function clearActiveBins() {
+  if (!activeBinId) return;
+  bins.forEach((bin) => bin.classList.remove('active'));
+  activeBinId = null;
+}
+
+function setActiveBin(type) {
+  clearActiveBins();
+  const selected = bins.find((bin) => bin.dataset.type === type);
+  if (selected) selected.classList.add('active');
+}
+
+function showNoGarbageOverlay(visible = true) {
+  if (overlayFlashing === visible) return;
+  overlay.classList.toggle('flashing', visible);
+  overlayFlashing = visible;
+}
+
+function setActiveBinById(binId) {
+  if (!binId) {
+    clearActiveBins();
+    return;
+  }
+
+  if (activeBinId === binId) return;
+
+  bins.forEach((bin) => {
+    bin.classList.toggle('active', bin.id === binId);
+  });
+  activeBinId = binId;
+}
+
+async function init() {
+  const modelURL = URL + 'model.json';
+  const metadataURL = URL + 'metadata.json';
+
+  model = await tmImage.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
+
+  webcam = new tmImage.Webcam(200, 200, true);
+  await webcam.setup();
+  await webcam.play();
+
+  webcam.canvas.setAttribute('aria-label', 'Live camera preview');
+  webcamContainer.appendChild(webcam.canvas);
+
+  window.requestAnimationFrame(loop);
+}
+
+async function loop() {
+  webcam.update();
+  await predict();
+  window.requestAnimationFrame(loop);
+}
+
+async function predict() {
+  if (!model || !webcam) return;
+  const predictions = await model.predict(webcam.canvas);
+
+  if (!predictions || predictions.length === 0 || maxPredictions === 0) {
+    showNoGarbageOverlay(true);
+    clearActiveBins();
+    return;
+  }
+
+  const bestPrediction = predictions.reduce((best, current) =>
+    current.probability > best.probability ? current : best
+  );
+
+  const bestClassName = bestPrediction.className;
+  const bestProbability = bestPrediction.probability;
+
+  if (NO_GARBAGE_CLASSES.has(bestClassName)) {
+    clearActiveBins();
+    showNoGarbageOverlay(true);
+    return;
+  }
+
+  const matchedBinId = BIN_ID_BY_CLASS[bestClassName];
+  if (matchedBinId && bestProbability > MIN_CONFIDENCE) {
+    showNoGarbageOverlay(false);
+    setActiveBinById(matchedBinId);
+    return;
+  }
+
+  clearActiveBins();
+  showNoGarbageOverlay(true);
+}
+
+window.garbageUI = {
+  setActiveBin,
+  clearActiveBins,
+  showNoGarbageOverlay,
+};
+
+window.addEventListener('load', () => {
+  clearActiveBins();
+  showNoGarbageOverlay(false);
+  init().catch((error) => {
+    console.error('Teachable Machine initialization failed:', error);
+    showNoGarbageOverlay(true);
+  });
+});
