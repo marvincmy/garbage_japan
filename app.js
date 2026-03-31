@@ -60,8 +60,24 @@ async function init() {
   model = await tmImage.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
 
-  webcam = new tmImage.Webcam(640, 640, false);
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // Desktop: flip=true (mirror), Mobile rear camera: flip=false
+  webcam = new tmImage.Webcam(640, 640, !isMobile);
   await webcam.setup();
+
+  // On mobile, replace the default front camera stream with rear camera
+  if (isMobile) {
+    const videoEl = webcam.webcam;
+    const oldStream = videoEl.srcObject;
+    if (oldStream) oldStream.getTracks().forEach((t) => t.stop());
+    const rearStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: 640, height: 640 },
+    });
+    videoEl.srcObject = rearStream;
+    await new Promise((resolve) => { videoEl.onloadedmetadata = resolve; });
+  }
+
   await webcam.play();
 
   webcam.canvas.setAttribute('aria-label', 'Live camera preview');
