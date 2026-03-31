@@ -60,7 +60,7 @@ async function init() {
   model = await tmImage.load(modelURL, metadataURL);
   maxPredictions = model.getTotalClasses();
 
-  webcam = new tmImage.Webcam(200, 200, true);
+  webcam = new tmImage.Webcam(640, 640, false);
   await webcam.setup();
   await webcam.play();
 
