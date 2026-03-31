@@ -1,4 +1,4 @@
-const URL = 'YOUR_TEACHABLE_MACHINE_URL_HERE/';
+const URL = 'https://teachablemachine.withgoogle.com/models/aER2QyV-b/';
 
 let model;
 let webcam;
