@@ -6,14 +6,14 @@ let maxPredictions;
 const MIN_CONFIDENCE = 0.8;
 
 const BIN_ID_BY_CLASS = {
-  Burnable: 'bin-burnable',
-  'Non-burnable': 'bin-non-burnable',
-  'Glass & PET': 'bin-glass-pet',
-  Oversized: 'bin-oversized',
-  Paper: 'bin-paper',
+  burnable_garbage: 'bin-burnable',
+  'non-burnable': 'bin-non-burnable',
+  glass_bottle: 'bin-glass-pet',
+  oversized_garbage: 'bin-oversized',
+  paper: 'bin-paper',
 };
 
-const NO_GARBAGE_CLASSES = new Set(['no garbage', 'human faces']);
+const NO_GARBAGE_CLASSES = new Set(['nothing', 'human_face']);
 
 const bins = Array.from(document.querySelectorAll('.bin'));
 const overlay = document.getElementById('no-garbage-overlay');
