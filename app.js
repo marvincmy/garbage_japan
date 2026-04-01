@@ -21,6 +21,11 @@ const TRANSLATIONS = {
     subtitle: 'A magic webpage that tells you how to dispose of trash when you place it in front of the camera.',
     noGarbage: 'No Garbage Detected',
     garbageTypes: 'Garbage Types',
+    detectedItemLabel: 'Detected Item',
+    waitingDetection: 'Waiting for detection',
+    scanHint: 'Show one item to the camera',
+    matchedState: 'Matched bin',
+    noMatchState: 'No matching bin',
     bins: {
       burnable: 'Burnable',
       'non-burnable': 'Non-burnable',
@@ -46,6 +51,11 @@ const TRANSLATIONS = {
     subtitle: '關於將垃圾擺喺鏡頭前面就會話你知點掉嘅神奇網頁',
     noGarbage: '未檢測到垃圾',
     garbageTypes: '垃圾類別',
+    detectedItemLabel: '檢測結果',
+    waitingDetection: '等待辨識',
+    scanHint: '請將單一物件放到鏡頭前',
+    matchedState: '已配對垃圾桶',
+    noMatchState: '未配對到垃圾桶',
     bins: {
       burnable: '可燃垃圾',
       'non-burnable': '不可燃垃圾',
@@ -71,10 +81,14 @@ const TRANSLATIONS = {
 const bins = Array.from(document.querySelectorAll('.bin'));
 const overlay = document.getElementById('no-garbage-overlay');
 const webcamContainer = document.getElementById('webcam-container');
+const detectedItemName = document.getElementById('detected-item-name');
+const detectedItemState = document.getElementById('detected-item-state');
+const detectedItemTip = document.getElementById('detected-item-tip');
 const translatableNodes = Array.from(document.querySelectorAll('[data-i18n]'));
 const labelNodes = Array.from(document.querySelectorAll('[data-label-key]'));
 const languageButtons = Array.from(document.querySelectorAll('.lang-button'));
 let activeBinId = null;
+let detectionState = null;
 let overlayFlashing = false;
 let currentLanguage = 'en';
 
@@ -91,17 +105,37 @@ function getTipText(className) {
   return getCurrentCopy().careTips[className] ?? '';
 }
 
-function updateBinTip(binId) {
-  clearBinTips();
-  if (!binId) return;
+function formatClassName(className) {
+  if (!className) return '';
+  return className
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
-  const className = getClassNameByBinId(binId);
-  const tip = getTipText(className);
-  const activeBin = bins.find((bin) => bin.id === binId);
-  const activeTip = activeBin?.querySelector('.bin-tip');
-  if (tip && activeTip) {
-    activeTip.textContent = tip;
+function getBinLabelById(binId) {
+  const bin = bins.find((entry) => entry.id === binId);
+  if (!bin) return '';
+  return getCurrentCopy().bins[bin.dataset.type] ?? '';
+}
+
+function setDetectedItemState(nextState) {
+  detectionState = nextState;
+
+  const copy = getCurrentCopy();
+  if (!nextState) {
+    detectedItemName.textContent = copy.waitingDetection;
+    detectedItemState.textContent = copy.scanHint;
+    detectedItemTip.textContent = copy.scanHint;
+    return;
   }
+
+  const detectedLabel = nextState.binId
+    ? getBinLabelById(nextState.binId)
+    : formatClassName(nextState.className);
+
+  detectedItemName.textContent = detectedLabel || copy.waitingDetection;
+  detectedItemState.textContent = nextState.matched ? copy.matchedState : copy.noMatchState;
+  detectedItemTip.textContent = getTipText(nextState.className) || copy.scanHint;
 }
 
 function updateTranslations() {
@@ -131,7 +165,7 @@ function updateTranslations() {
     button.setAttribute('aria-pressed', String(button.dataset.lang === currentLanguage));
   });
 
-  updateBinTip(activeBinId);
+  setDetectedItemState(detectionState);
 }
 
 function setLanguage(language) {
@@ -140,17 +174,14 @@ function setLanguage(language) {
   updateTranslations();
 }
 
-function clearBinTips() {
-  bins.forEach((bin) => {
-    const tip = bin.querySelector('.bin-tip');
-    if (tip) tip.textContent = '';
-  });
+function clearActiveHighlight() {
+  bins.forEach((bin) => bin.classList.remove('active'));
+  activeBinId = null;
 }
 
 function clearActiveBins() {
-  bins.forEach((bin) => bin.classList.remove('active'));
-  activeBinId = null;
-  clearBinTips();
+  clearActiveHighlight();
+  setDetectedItemState(null);
 }
 
 function setActiveBin(type) {
@@ -176,7 +207,11 @@ function setActiveBinById(binId) {
     bin.classList.toggle('active', bin.id === binId);
   });
   activeBinId = binId;
-  updateBinTip(binId);
+  setDetectedItemState({
+    binId,
+    className: getClassNameByBinId(binId),
+    matched: true,
+  });
 }
 
 async function init() {
@@ -248,7 +283,11 @@ async function predict() {
     return;
   }
 
-  clearActiveBins();
+  clearActiveHighlight();
+  setDetectedItemState({
+    className: bestClassName,
+    matched: false,
+  });
   showNoGarbageOverlay(true);
 }
 

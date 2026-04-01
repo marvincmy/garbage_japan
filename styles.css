@@ -188,20 +188,82 @@ body {
 }
 
 .bins-panel {
+  height: 100%;
   padding: 1rem;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 0.8rem;
 }
 
 .bins-panel h2 {
-  margin: 0 0 0.8rem;
+  margin: 0;
   font-family: "Space Grotesk", sans-serif;
   font-size: 1.2rem;
+}
+
+.detected-card {
+  min-height: 148px;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(120, 154, 111, 0.2);
+  background:
+    radial-gradient(circle at top right, rgba(210, 242, 199, 0.8), transparent 32%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(235, 246, 225, 0.82));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 10px 24px rgba(46, 84, 35, 0.1);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 0.45rem;
+}
+
+.detected-eyebrow {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #567153;
+}
+
+.detected-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+#detected-item-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  color: #20371d;
+}
+
+#detected-item-state {
+  flex-shrink: 0;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(69, 125, 52, 0.1);
+  color: #35612b;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.detected-tip {
+  margin: 0;
+  color: #33502f;
+  font-size: 0.84rem;
+  line-height: 1.5;
 }
 
 .bins-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.75rem;
-  align-items: start;
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  min-height: 0;
 }
 
 .bin {
@@ -218,7 +280,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
-  min-height: 132px;
+  min-height: 0;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 200ms ease, background 180ms ease;
   box-shadow:
@@ -248,18 +310,6 @@ body {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
   opacity: 0.55;
   pointer-events: none;
-}
-
-.bin-tip {
-  display: none;
-  width: 100%;
-  margin-top: 0.45rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.42);
-  font-size: 0.74rem;
-  line-height: 1.45;
-  color: #264025;
-  text-align: left;
 }
 
 .bin svg {
@@ -294,7 +344,6 @@ body {
   filter: none;
   border-color: rgba(194, 243, 168, 0.85);
   background: linear-gradient(145deg, rgba(241, 255, 229, 0.55), rgba(214, 243, 193, 0.38));
-  transform: scale(1.02);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.85),
     0 0 0 1px rgba(221, 255, 205, 0.7),
@@ -313,10 +362,6 @@ body {
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), transparent 42%);
 }
 
-.bin.active .bin-tip {
-  display: block;
-}
-
 @media (max-width: 980px) {
   .header-topline {
     flex-direction: column;
@@ -329,6 +374,14 @@ body {
 
   .app-layout {
     grid-template-columns: 1fr;
+  }
+
+  .bins-panel {
+    grid-template-rows: auto auto auto;
+  }
+
+  .bins-grid {
+    grid-template-rows: none;
   }
 
   #webcam-container {
@@ -387,7 +440,28 @@ body {
 
   .bins-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(88px, auto);
     gap: 0.5rem;
+  }
+
+  .detected-card {
+    min-height: 136px;
+    padding: 0.8rem 0.85rem;
+    border-radius: 16px;
+  }
+
+  .detected-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  #detected-item-name {
+    font-size: 1rem;
+  }
+
+  .detected-tip {
+    font-size: 0.78rem;
   }
 
   .bin {
@@ -416,12 +490,5 @@ body {
 
   .bin .jp {
     font-size: 0.66rem;
-  }
-
-  .bin-tip {
-    margin-top: 0.35rem;
-    padding-top: 0.4rem;
-    font-size: 0.65rem;
-    line-height: 1.35;
   }
 }

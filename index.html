@@ -38,6 +38,14 @@
 
         <section class="bins-panel" aria-label="Garbage categories">
           <h2 data-i18n="garbageTypes">Garbage Types</h2>
+          <div class="detected-card" aria-live="polite">
+            <p class="detected-eyebrow" data-i18n="detectedItemLabel">Detected Item</p>
+            <div class="detected-main">
+              <span id="detected-item-name" data-i18n="waitingDetection">Waiting for detection</span>
+              <span id="detected-item-state" data-i18n="scanHint">Show one item to the camera</span>
+            </div>
+            <p id="detected-item-tip" class="detected-tip" data-i18n="scanHint">Show one item to the camera</p>
+          </div>
           <div class="bins-grid">
             <button id="bin-burnable" class="bin" data-type="burnable" type="button" aria-label="Burnable - 燃えるごみ">
               <span class="bin-glass" aria-hidden="true"></span>
@@ -47,7 +55,6 @@
               </svg>
               <span class="en" data-label-key="burnable">Burnable</span>
               <span class="jp">燃えるごみ</span>
-              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-non-burnable" class="bin" data-type="non-burnable" type="button" aria-label="Non-burnable - 燃えないごみ">
@@ -62,7 +69,6 @@
               </svg>
               <span class="en" data-label-key="non-burnable">Non-burnable</span>
               <span class="jp">燃えないごみ</span>
-              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-glass-pet" class="bin" data-type="glass-pet" type="button" aria-label="Glass and PET - 空きびん・ペットボトル">
@@ -77,7 +83,6 @@
               </svg>
               <span class="en" data-label-key="glass-pet">Glass &amp; PET</span>
               <span class="jp">空きびん・ペットボトル</span>
-              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-oversized" class="bin" data-type="oversized" type="button" aria-label="Oversized - 粗大ごみ">
@@ -91,7 +96,6 @@
               </svg>
               <span class="en" data-label-key="oversized">Oversized</span>
               <span class="jp">粗大ごみ</span>
-              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-paper" class="bin" data-type="paper" type="button" aria-label="Paper - 古紙">
@@ -105,7 +109,6 @@
               </svg>
               <span class="en" data-label-key="paper">Paper</span>
               <span class="jp">古紙</span>
-              <span class="bin-tip" aria-live="polite"></span>
             </button>
           </div>
         </section>
