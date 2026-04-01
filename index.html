@@ -26,9 +26,6 @@
           <div id="webcam-container">
             <div id="no-garbage-overlay" aria-hidden="true">No Garbage Detected</div>
           </div>
-          <div id="care-tip" aria-live="polite" hidden>
-            <span id="care-tip-text"></span>
-          </div>
         </section>
 
         <section class="bins-panel" aria-label="Garbage categories">
@@ -41,6 +38,7 @@
               </svg>
               <span class="en">Burnable</span>
               <span class="jp">燃えるごみ</span>
+              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-non-burnable" class="bin" data-type="non-burnable" type="button" aria-label="Non-burnable - 燃えないごみ">
@@ -54,6 +52,7 @@
               </svg>
               <span class="en">Non-burnable</span>
               <span class="jp">燃えないごみ</span>
+              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-glass-pet" class="bin" data-type="glass-pet" type="button" aria-label="Glass and PET - 空きびん・ペットボトル">
@@ -67,6 +66,7 @@
               </svg>
               <span class="en">Glass &amp; PET</span>
               <span class="jp">空きびん・ペットボトル</span>
+              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-oversized" class="bin" data-type="oversized" type="button" aria-label="Oversized - 粗大ごみ">
@@ -79,6 +79,7 @@
               </svg>
               <span class="en">Oversized</span>
               <span class="jp">粗大ごみ</span>
+              <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-paper" class="bin" data-type="paper" type="button" aria-label="Paper - 古紙">
@@ -91,6 +92,7 @@
               </svg>
               <span class="en">Paper</span>
               <span class="jp">古紙</span>
+              <span class="bin-tip" aria-live="polite"></span>
             </button>
           </div>
         </section>
