@@ -82,7 +82,10 @@ const TRANSLATIONS = {
 const bins = Array.from(document.querySelectorAll('.bin'));
 const overlay = document.getElementById('no-garbage-overlay');
 const webcamContainer = document.getElementById('webcam-container');
+const detectedCard = document.querySelector('.detected-card');
+const detectedItemIcon = document.getElementById('detected-item-icon');
 const detectedItemName = document.getElementById('detected-item-name');
+const detectedItemJp = document.getElementById('detected-item-jp');
 const detectedItemState = document.getElementById('detected-item-state');
 const detectedItemTip = document.getElementById('detected-item-tip');
 const translatableNodes = Array.from(document.querySelectorAll('[data-i18n]'));
@@ -119,12 +122,35 @@ function getBinLabelById(binId) {
   return getCurrentCopy().bins[bin.dataset.type] ?? '';
 }
 
+function getBinById(binId) {
+  return bins.find((entry) => entry.id === binId) ?? null;
+}
+
+function getJapaneseLabelByBinId(binId) {
+  return getBinById(binId)?.querySelector('.jp')?.textContent ?? '';
+}
+
+function syncDetectedCardAppearance(binId) {
+  const bin = getBinById(binId);
+
+  if (!bin) {
+    detectedCard.removeAttribute('data-type');
+    detectedItemIcon.innerHTML = '';
+    return;
+  }
+
+  detectedCard.dataset.type = bin.dataset.type;
+  detectedItemIcon.innerHTML = bin.querySelector('svg')?.outerHTML ?? '';
+}
+
 function setDetectedItemState(nextState) {
   detectionState = nextState;
 
   const copy = getCurrentCopy();
   if (!nextState) {
+    syncDetectedCardAppearance(null);
     detectedItemName.textContent = copy.waitingDetection;
+    detectedItemJp.textContent = '';
     detectedItemState.textContent = copy.scanHint;
     detectedItemTip.textContent = copy.scanHint;
     return;
@@ -133,8 +159,11 @@ function setDetectedItemState(nextState) {
   const detectedLabel = nextState.binId
     ? getBinLabelById(nextState.binId)
     : formatClassName(nextState.className);
+  const detectedJp = nextState.binId ? getJapaneseLabelByBinId(nextState.binId) : '';
 
+  syncDetectedCardAppearance(nextState.binId ?? null);
   detectedItemName.textContent = detectedLabel || copy.waitingDetection;
+  detectedItemJp.textContent = detectedJp;
   detectedItemState.textContent = nextState.matched ? copy.matchedState : copy.noMatchState;
   detectedItemTip.textContent = getTipText(nextState.className) || copy.scanHint;
 }
@@ -288,6 +317,7 @@ async function predict() {
 
   clearActiveHighlight();
   setDetectedItemState({
+    binId: matchedBinId ?? null,
     className: bestClassName,
     matched: false,
   });
