@@ -18,7 +18,7 @@ const NO_GARBAGE_CLASSES = new Set(['nothing', 'human_face']);
 const TRANSLATIONS = {
   en: {
     title: 'SMART TRASH SCANNER',
-    subtitle: 'A magic webpage that tells you how to dispose of trash when you place it in front of the camera.',
+    subtitle: 'Place one item in front of the camera to see the matching disposal category and handling tips.',
     noGarbage: 'No Garbage Detected',
     garbageTypes: 'Garbage Types',
     detectedItemLabel: 'Detected Item',
@@ -47,8 +47,8 @@ const TRANSLATIONS = {
     },
   },
   zh: {
-    title: 'SMART TRASH SCANNER',
-    subtitle: '關於將垃圾擺喺鏡頭前面就會話你知點掉嘅神奇網頁',
+    title: '關於將垃圾擺喺鏡頭前面就會話你知點掉嘅神奇網頁',
+    subtitle: '將一件垃圾放到鏡頭前，系統會幫你辨認類別、標示對應垃圾桶，並顯示處理提示。',
     noGarbage: '未檢測到垃圾',
     garbageTypes: '垃圾類別',
     detectedItemLabel: '檢測結果',
