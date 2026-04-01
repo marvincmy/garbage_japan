@@ -440,17 +440,6 @@ body {
   opacity: 0.9;
 }
 
-.bin::after {
-  content: "";
-  position: absolute;
-  inset: 31% 14% auto 14%;
-  height: 24%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
-  opacity: 0.55;
-  pointer-events: none;
-}
-
 .bin svg {
   width: 62px;
   height: 62px;
