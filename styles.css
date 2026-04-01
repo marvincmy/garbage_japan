@@ -443,7 +443,7 @@ body {
 .bin::after {
   content: "";
   position: absolute;
-  inset: auto 14% 58% 14%;
+  inset: 31% 14% auto 14%;
   height: 24%;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
