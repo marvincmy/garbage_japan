@@ -173,7 +173,7 @@ body {
 
 #no-garbage-overlay {
   position: absolute;
-  top: 68%;
+  top: 74%;
   left: 50%;
   display: none;
   width: min(84%, 440px);
@@ -500,9 +500,12 @@ body {
   }
 
   .detected-card {
-    min-height: 136px;
+    height: 210px;
+    min-height: 210px;
     padding: 0.8rem 0.85rem;
     border-radius: 16px;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    overflow: hidden;
   }
 
   .detected-main {
@@ -513,10 +516,20 @@ body {
 
   #detected-item-name {
     font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  #detected-item-state {
+    min-height: 2.05rem;
+    display: inline-flex;
+    align-items: center;
   }
 
   .detected-tip {
     font-size: 0.78rem;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.15rem;
   }
 
   .bin {
