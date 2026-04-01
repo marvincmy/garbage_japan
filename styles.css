@@ -543,6 +543,13 @@ body {
 }
 
 @media (max-width: 560px) {
+  body {
+    background:
+      linear-gradient(180deg, #ffffff 0, #ffffff 96px, #eef6e3 168px, var(--bg-accent) 320px, var(--bg) 100%),
+      radial-gradient(circle at 16% 24%, rgba(217, 236, 194, 0.62) 0%, transparent 42%),
+      radial-gradient(circle at 88% 82%, rgba(207, 231, 247, 0.55) 0%, transparent 36%);
+  }
+
   .page-shell {
     padding: 0.85rem;
   }
