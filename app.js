@@ -14,6 +14,7 @@ const BIN_ID_BY_CLASS = {
 };
 
 const NO_GARBAGE_CLASSES = new Set(['nothing', 'human_face']);
+const PAGE_TITLE = 'Smart Trash Scanner / 關於將垃圾擺喺鏡頭前面就會話你知點掉嘅神奇網頁';
 
 const TRANSLATIONS = {
   en: {
@@ -140,7 +141,7 @@ function setDetectedItemState(nextState) {
 
 function updateTranslations() {
   const copy = getCurrentCopy();
-  document.title = copy.title;
+  document.title = PAGE_TITLE;
   document.documentElement.lang = currentLanguage;
   document.body.dataset.language = currentLanguage;
 
