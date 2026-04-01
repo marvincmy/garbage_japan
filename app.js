@@ -4,6 +4,7 @@ let model;
 let webcam;
 let maxPredictions;
 const MIN_CONFIDENCE = 0.8;
+const PREDICTION_INTERVAL_MS = 1000;
 
 const BIN_ID_BY_CLASS = {
   burnable_garbage: 'bin-burnable',
@@ -24,6 +25,7 @@ const TRANSLATIONS = {
     continueScanning: 'Click here to continue scanning on the camera area',
     garbageTypes: 'Garbage Types',
     detectedItemLabel: 'Detected Item',
+    selectedItemLabel: 'Selected Item',
     waitingDetection: 'Waiting for detection',
     scanHint: 'Show one item to the camera',
     matchedState: 'Matched bin',
@@ -55,6 +57,7 @@ const TRANSLATIONS = {
     continueScanning: '點擊鏡頭畫面即可繼續掃描',
     garbageTypes: '垃圾類別',
     detectedItemLabel: '檢測結果',
+    selectedItemLabel: '已選垃圾類別',
     waitingDetection: '等待辨識',
     scanHint: '請將單一物件放到鏡頭前',
     matchedState: '已配對垃圾桶',
@@ -85,6 +88,7 @@ const bins = Array.from(document.querySelectorAll('.bin'));
 const overlay = document.getElementById('no-garbage-overlay');
 const webcamContainer = document.getElementById('webcam-container');
 const detectedCard = document.querySelector('.detected-card');
+const detectedEyebrow = document.querySelector('.detected-eyebrow');
 const detectedItemIcon = document.getElementById('detected-item-icon');
 const detectedItemName = document.getElementById('detected-item-name');
 const detectedItemJp = document.getElementById('detected-item-jp');
@@ -98,6 +102,7 @@ let overlayFlashing = false;
 let overlayMessageKey = 'scanHint';
 let currentLanguage = 'en';
 let manualSelectionBinId = null;
+let lastPredictionAt = 0;
 
 function getCurrentCopy() {
   return TRANSLATIONS[currentLanguage] ?? TRANSLATIONS.en;
@@ -167,6 +172,8 @@ function setDetectedItemState(nextState) {
   detectionState = nextState;
 
   const copy = getCurrentCopy();
+  detectedEyebrow.textContent = manualSelectionBinId ? copy.selectedItemLabel : copy.detectedItemLabel;
+
   if (!nextState) {
     syncDetectedCardAppearance(null);
     detectedItemName.textContent = copy.waitingDetection;
@@ -259,7 +266,7 @@ function previewBinDetails(binId) {
 
 function setActiveBin(type) {
   const selected = bins.find((bin) => bin.dataset.type === type);
-  setActiveBinById(selected?.id ?? null);
+  previewBinDetails(selected?.id ?? null);
 }
 
 function showNoGarbageOverlay(visible = true) {
@@ -320,7 +327,11 @@ async function init() {
 
 async function loop() {
   webcam.update();
-  await predict();
+  const now = performance.now();
+  if (now - lastPredictionAt >= PREDICTION_INTERVAL_MS) {
+    lastPredictionAt = now;
+    await predict();
+  }
   window.requestAnimationFrame(loop);
 }
 
@@ -395,6 +406,7 @@ languageButtons.forEach((button) => {
 
 window.addEventListener('load', () => {
   clearActiveBins();
+  lastPredictionAt = 0;
   setOverlayMessage(overlayMessageKey);
   showNoGarbageOverlay(true);
   updateTranslations();
