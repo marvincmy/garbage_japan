@@ -17,8 +17,8 @@ const NO_GARBAGE_CLASSES = new Set(['nothing', 'human_face']);
 
 const TRANSLATIONS = {
   en: {
-    title: 'Fukuoka City Garbage Sorter',
-    subtitle: 'Point your camera at trash and confirm the suggested sorting category.',
+    title: 'SMART TRASH SCANNER',
+    subtitle: 'A magic webpage that tells you how to dispose of trash when you place it in front of the camera.',
     noGarbage: 'No Garbage Detected',
     garbageTypes: 'Garbage Types',
     bins: {
@@ -42,28 +42,28 @@ const TRANSLATIONS = {
     },
   },
   zh: {
-    title: '福冈市垃圾分类助手',
-    subtitle: '将镜头对准垃圾，确认系统建议的分类类别。',
-    noGarbage: '未检测到垃圾',
-    garbageTypes: '垃圾类别',
+    title: 'SMART TRASH SCANNER',
+    subtitle: '關於將垃圾擺喺鏡頭前面就會話你知點掉嘅神奇網頁',
+    noGarbage: '未檢測到垃圾',
+    garbageTypes: '垃圾類別',
     bins: {
       burnable: '可燃垃圾',
       'non-burnable': '不可燃垃圾',
-      'glass-pet': '玻璃瓶与PET瓶',
+      'glass-pet': '玻璃瓶與 PET 瓶',
       oversized: '大型垃圾',
-      paper: '纸类',
+      paper: '紙類',
     },
     careTips: {
       burnable_garbage:
-        '请放入指定的可燃垃圾袋。厨余垃圾请先沥干。食用油请先用纸或布吸附后再丢弃。',
+        '請放入指定的可燃垃圾袋。廚餘垃圾請先瀝乾。食用油請先用紙或布吸附後再丟棄。',
       'non-burnable':
-        '请放入指定的不可燃垃圾袋。丢弃前请先取出电池。尖锐物品请先用纸包好以确保安全。',
+        '請放入指定的不可燃垃圾袋。丟棄前請先取出電池。尖銳物品請先用紙包好以確保安全。',
       glass_bottle:
-        '请先取下瓶盖与标签。塑料瓶盖属于可燃垃圾，金属瓶盖属于不可燃垃圾。请冲洗干净，并将PET瓶纵向压扁后投入指定回收袋。',
+        '請先取下瓶蓋與標籤。塑膠瓶蓋屬於可燃垃圾，金屬瓶蓋屬於不可燃垃圾。請沖洗乾淨，並將 PET 瓶縱向壓扁後投入指定回收袋。',
       oversized_garbage:
-        '需要事先申请并支付费用。请拨打 092-731-1153 或通过市政府网站申请。大型垃圾不会在日常收运日回收。',
+        '需要事先申請並支付費用。請撥打 092-731-1153 或透過市政府網站申請。大型垃圾不會在日常收運日回收。',
       paper:
-        '请将报纸、纸箱和杂纸分开整理，并分别用绳子捆好。纸箱上的胶带、订书钉和贴纸请先移除。',
+        '請將報紙、紙箱和雜紙分開整理，並分別用繩子綑好。紙箱上的膠帶、訂書釘和貼紙請先移除。',
     },
   },
 };
@@ -106,6 +106,7 @@ function updateBinTip(binId) {
 
 function updateTranslations() {
   const copy = getCurrentCopy();
+  document.title = copy.title;
 
   translatableNodes.forEach((node) => {
     const key = node.dataset.i18n;
