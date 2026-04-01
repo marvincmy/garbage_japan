@@ -57,6 +57,7 @@ body {
   font-family: "Space Grotesk", sans-serif;
   font-size: clamp(1.6rem, 2.8vw, 2.8rem);
   letter-spacing: 0.02em;
+  white-space: pre-line;
 }
 
 .app-header p {
@@ -427,8 +428,8 @@ body {
   }
 
   .app-header h1 {
-    font-size: clamp(1.1rem, 8vw, 2rem);
-    line-height: 1.02;
+    font-size: clamp(1rem, 6.6vw, 1.7rem);
+    line-height: 1.08;
   }
 
   .app-header p {
