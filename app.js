@@ -21,6 +21,7 @@ const TRANSLATIONS = {
     title: 'SMART TRASH SCANNER',
     subtitle: 'Place one item in front of the camera to see the matching disposal category and handling tips.',
     noGarbage: 'No Garbage Detected',
+    continueScanning: 'Click here to continue scanning on the camera area',
     garbageTypes: 'Garbage Types',
     detectedItemLabel: 'Detected Item',
     waitingDetection: 'Waiting for detection',
@@ -51,6 +52,7 @@ const TRANSLATIONS = {
     title: '關於將垃圾擺喺鏡頭前面\n就會話你知點掉嘅神奇網頁',
     subtitle: '將一件垃圾放到鏡頭前，系統會幫你辨認類別、標示對應垃圾桶，並顯示處理提示。',
     noGarbage: '未檢測到垃圾',
+    continueScanning: '點擊鏡頭畫面即可繼續掃描',
     garbageTypes: '垃圾類別',
     detectedItemLabel: '檢測結果',
     waitingDetection: '等待辨識',
@@ -95,6 +97,7 @@ let detectionState = null;
 let overlayFlashing = false;
 let overlayMessageKey = 'scanHint';
 let currentLanguage = 'en';
+let manualSelectionBinId = null;
 
 function getCurrentCopy() {
   return TRANSLATIONS[currentLanguage] ?? TRANSLATIONS.en;
@@ -147,6 +150,17 @@ function setOverlayMessage(messageKey) {
   overlayMessageKey = messageKey;
   overlay.dataset.i18n = messageKey;
   overlay.textContent = getCurrentCopy()[messageKey] ?? '';
+}
+
+function setManualSelectionState(isActive) {
+  webcamContainer.classList.toggle('manual-selection-active', isActive);
+}
+
+function applyActiveBinHighlight(binId) {
+  bins.forEach((bin) => {
+    bin.classList.toggle('active', bin.id === binId);
+  });
+  activeBinId = binId;
 }
 
 function setDetectedItemState(nextState) {
@@ -211,13 +225,36 @@ function setLanguage(language) {
 }
 
 function clearActiveHighlight() {
-  bins.forEach((bin) => bin.classList.remove('active'));
-  activeBinId = null;
+  applyActiveBinHighlight(null);
 }
 
 function clearActiveBins() {
+  manualSelectionBinId = null;
+  setManualSelectionState(false);
   clearActiveHighlight();
   setDetectedItemState(null);
+}
+
+function resumeAutoScanning() {
+  if (!manualSelectionBinId) return;
+  clearActiveBins();
+  setOverlayMessage('scanHint');
+  showNoGarbageOverlay(true);
+}
+
+function previewBinDetails(binId) {
+  if (!binId) return;
+
+  manualSelectionBinId = binId;
+  setManualSelectionState(true);
+  applyActiveBinHighlight(binId);
+  setDetectedItemState({
+    binId,
+    className: getClassNameByBinId(binId),
+    matched: true,
+  });
+  setOverlayMessage('continueScanning');
+  showNoGarbageOverlay(true);
 }
 
 function setActiveBin(type) {
@@ -239,10 +276,7 @@ function setActiveBinById(binId) {
 
   if (activeBinId === binId) return;
 
-  bins.forEach((bin) => {
-    bin.classList.toggle('active', bin.id === binId);
-  });
-  activeBinId = binId;
+  applyActiveBinHighlight(binId);
   setOverlayMessage('noGarbage');
   setDetectedItemState({
     binId,
@@ -292,6 +326,8 @@ async function loop() {
 
 async function predict() {
   if (!model || !webcam) return;
+  if (manualSelectionBinId) return;
+
   const predictions = await model.predict(webcam.canvas);
 
   if (!predictions || predictions.length === 0 || maxPredictions === 0) {
@@ -337,7 +373,19 @@ window.garbageUI = {
   clearActiveBins,
   showNoGarbageOverlay,
   setLanguage,
+  previewBinDetails,
+  resumeAutoScanning,
 };
+
+bins.forEach((bin) => {
+  bin.addEventListener('click', () => {
+    previewBinDetails(bin.id);
+  });
+});
+
+webcamContainer.addEventListener('click', () => {
+  resumeAutoScanning();
+});
 
 languageButtons.forEach((button) => {
   button.addEventListener('click', () => {
