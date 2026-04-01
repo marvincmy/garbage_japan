@@ -3,6 +3,9 @@
   --bg-accent: #e4f1d6;
   --surface: #ffffff;
   --surface-2: #f9fbf4;
+  --glass: rgba(255, 255, 255, 0.3);
+  --glass-strong: rgba(255, 255, 255, 0.42);
+  --glass-line: rgba(255, 255, 255, 0.4);
   --text: #1f2a1f;
   --muted: #546254;
   --line: #d8e4cd;
@@ -38,6 +41,13 @@ body {
   margin-bottom: 1rem;
 }
 
+.header-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .app-header h1 {
   margin: 0;
   font-family: "Space Grotesk", sans-serif;
@@ -49,6 +59,47 @@ body {
   margin: 0.35rem 0 0;
   color: var(--muted);
   font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(232, 241, 223, 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 10px 24px rgba(29, 54, 27, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+}
+
+.lang-button {
+  border: 0;
+  border-radius: 999px;
+  min-width: 56px;
+  padding: 0.48rem 0.9rem;
+  background: transparent;
+  color: var(--muted);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.lang-button:hover {
+  transform: translateY(-1px);
+}
+
+.lang-button.active {
+  color: #20411d;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(237, 248, 224, 0.95));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 8px 18px rgba(48, 86, 43, 0.18);
 }
 
 .app-layout {
@@ -121,10 +172,13 @@ body {
   letter-spacing: 0.08em;
   color: #fff;
   text-transform: uppercase;
-  background: rgba(18, 29, 18, 0.48);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(33, 47, 34, 0.32));
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
-  backdrop-filter: blur(5px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 12px 30px rgba(19, 29, 19, 0.24);
+  backdrop-filter: blur(10px);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   z-index: 10;
 }
@@ -151,10 +205,13 @@ body {
 }
 
 .bin {
-  border: 1px solid #d9e4d1;
-  border-radius: 14px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
   padding: 0.8rem 0.7rem;
-  background: #fbfdf8;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(237, 243, 232, 0.58));
   color: var(--text);
   display: flex;
   flex-direction: column;
@@ -163,8 +220,34 @@ body {
   gap: 0.2rem;
   min-height: 132px;
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 200ms ease;
-  filter: grayscale(1) saturate(0.2) brightness(0.88);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 200ms ease, background 180ms ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 10px 24px rgba(45, 67, 40, 0.1);
+  backdrop-filter: blur(12px);
+  filter: grayscale(0.55) saturate(0.6) brightness(0.96);
+}
+
+.bin-glass {
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: 17px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.12)),
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.52), transparent 38%);
+  opacity: 0.9;
+}
+
+.bin::after {
+  content: "";
+  position: absolute;
+  inset: auto 14% 58% 14%;
+  height: 24%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .bin-tip {
@@ -172,10 +255,10 @@ body {
   width: 100%;
   margin-top: 0.45rem;
   padding-top: 0.5rem;
-  border-top: 1px solid rgba(77, 143, 53, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.42);
   font-size: 0.74rem;
   line-height: 1.45;
-  color: #365030;
+  color: #264025;
   text-align: left;
 }
 
@@ -201,15 +284,22 @@ body {
 
 .bin:hover {
   transform: translateY(-2px);
-  border-color: #b5caad;
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 14px 28px rgba(45, 67, 40, 0.14);
 }
 
 .bin.active {
   filter: none;
-  border-color: var(--active);
-  background: linear-gradient(155deg, #effadd 0%, #f8ffea 100%);
+  border-color: rgba(194, 243, 168, 0.85);
+  background: linear-gradient(145deg, rgba(241, 255, 229, 0.55), rgba(214, 243, 193, 0.38));
   transform: scale(1.02);
-  box-shadow: 0 0 0 2px rgba(106, 171, 82, 0.22), 0 0 22px var(--active-glow);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 0 0 1px rgba(221, 255, 205, 0.7),
+    0 0 22px var(--active-glow),
+    0 18px 34px rgba(68, 118, 53, 0.18);
 }
 
 .bin.active svg {
@@ -217,11 +307,26 @@ body {
   stroke: #2f6d22;
 }
 
+.bin.active .bin-glass {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(232, 255, 219, 0.18)),
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), transparent 42%);
+}
+
 .bin.active .bin-tip {
   display: block;
 }
 
 @media (max-width: 980px) {
+  .header-topline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .language-switch {
+    align-self: flex-end;
+  }
+
   .app-layout {
     grid-template-columns: 1fr;
   }
@@ -235,6 +340,21 @@ body {
 @media (max-width: 560px) {
   .page-shell {
     padding: 0.85rem;
+  }
+
+  .header-topline {
+    gap: 0.7rem;
+  }
+
+  .language-switch {
+    align-self: stretch;
+    justify-content: flex-end;
+  }
+
+  .lang-button {
+    min-width: 52px;
+    padding: 0.42rem 0.78rem;
+    font-size: 0.76rem;
   }
 
   .app-header {
@@ -277,6 +397,11 @@ body {
     gap: 0.15rem;
     text-align: center;
     padding: 0.5rem 0.38rem;
+    border-radius: 16px;
+  }
+
+  .bin-glass {
+    border-radius: 15px;
   }
 
   .bin svg {

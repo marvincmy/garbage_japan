@@ -17,31 +17,41 @@
   <body>
     <div class="page-shell">
       <header class="app-header">
-        <h1>Fukuoka City Garbage Sorter</h1>
-        <p>Point your camera at trash and confirm the suggested sorting category.</p>
+        <div class="header-topline">
+          <div>
+            <h1 data-i18n="title">Fukuoka City Garbage Sorter</h1>
+            <p data-i18n="subtitle">Point your camera at trash and confirm the suggested sorting category.</p>
+          </div>
+          <div class="language-switch" aria-label="Language switch">
+            <button class="lang-button active" type="button" data-lang="en">EN</button>
+            <button class="lang-button" type="button" data-lang="zh">中文</button>
+          </div>
+        </div>
       </header>
 
       <main class="app-layout" aria-live="polite">
         <section class="camera-panel" aria-label="Camera preview">
           <div id="webcam-container">
-            <div id="no-garbage-overlay" aria-hidden="true">No Garbage Detected</div>
+            <div id="no-garbage-overlay" aria-hidden="true" data-i18n="noGarbage">No Garbage Detected</div>
           </div>
         </section>
 
         <section class="bins-panel" aria-label="Garbage categories">
-          <h2>Garbage Types</h2>
+          <h2 data-i18n="garbageTypes">Garbage Types</h2>
           <div class="bins-grid">
             <button id="bin-burnable" class="bin" data-type="burnable" type="button" aria-label="Burnable - 燃えるごみ">
+              <span class="bin-glass" aria-hidden="true"></span>
               <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
                 <path d="M32 8 C26 16 16 24 16 36 C16 48 23 56 32 56 C41 56 48 48 48 36 C48 24 38 16 32 8 Z"/>
                 <path d="M32 30 C28 35 27 42 30 47 C31 49 33 49 34 47 C37 42 36 35 32 30 Z"/>
               </svg>
-              <span class="en">Burnable</span>
+              <span class="en" data-label-key="burnable">Burnable</span>
               <span class="jp">燃えるごみ</span>
               <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-non-burnable" class="bin" data-type="non-burnable" type="button" aria-label="Non-burnable - 燃えないごみ">
+              <span class="bin-glass" aria-hidden="true"></span>
               <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
                 <rect x="18" y="20" width="28" height="36" rx="4" />
                 <rect x="14" y="14" width="36" height="6" rx="3" />
@@ -50,12 +60,13 @@
                 <line x1="38" y1="28" x2="38" y2="48" />
                 <circle cx="32" cy="8" r="4" />
               </svg>
-              <span class="en">Non-burnable</span>
+              <span class="en" data-label-key="non-burnable">Non-burnable</span>
               <span class="jp">燃えないごみ</span>
               <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-glass-pet" class="bin" data-type="glass-pet" type="button" aria-label="Glass and PET - 空きびん・ペットボトル">
+              <span class="bin-glass" aria-hidden="true"></span>
               <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
                 <line x1="10" y1="10" x2="26" y2="10"/>
                 <path d="M10 10 C10 20 15 26 18 30 C21 26 26 20 26 10"/>
@@ -64,12 +75,13 @@
                 <rect x="37" y="8" width="6" height="4" rx="1"/>
                 <path d="M37 12 L43 12 L43 18 C47 20 50 25 50 31 L50 52 C50 55 48 57 45 57 L35 57 C32 57 30 55 30 52 L30 31 C30 25 33 20 37 18 Z"/>
               </svg>
-              <span class="en">Glass &amp; PET</span>
+              <span class="en" data-label-key="glass-pet">Glass &amp; PET</span>
               <span class="jp">空きびん・ペットボトル</span>
               <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-oversized" class="bin" data-type="oversized" type="button" aria-label="Oversized - 粗大ごみ">
+              <span class="bin-glass" aria-hidden="true"></span>
               <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
                 <rect x="8" y="24" width="48" height="22" rx="3" />
                 <line x1="8" y1="35" x2="56" y2="35" />
@@ -77,12 +89,13 @@
                 <circle cx="46" cy="50" r="4" />
                 <path d="M20 20 V12 H44 V20" />
               </svg>
-              <span class="en">Oversized</span>
+              <span class="en" data-label-key="oversized">Oversized</span>
               <span class="jp">粗大ごみ</span>
               <span class="bin-tip" aria-live="polite"></span>
             </button>
 
             <button id="bin-paper" class="bin" data-type="paper" type="button" aria-label="Paper - 古紙">
+              <span class="bin-glass" aria-hidden="true"></span>
               <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
                 <rect x="16" y="16" width="30" height="38" rx="3" />
                 <path d="M26 16 V8 H54 V46 H46" />
@@ -90,7 +103,7 @@
                 <line x1="22" y1="36" x2="40" y2="36" />
                 <line x1="22" y1="44" x2="34" y2="44" />
               </svg>
-              <span class="en">Paper</span>
+              <span class="en" data-label-key="paper">Paper</span>
               <span class="jp">古紙</span>
               <span class="bin-tip" aria-live="polite"></span>
             </button>
