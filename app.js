@@ -86,7 +86,6 @@ const detectedCard = document.querySelector('.detected-card');
 const detectedItemIcon = document.getElementById('detected-item-icon');
 const detectedItemName = document.getElementById('detected-item-name');
 const detectedItemJp = document.getElementById('detected-item-jp');
-const detectedItemState = document.getElementById('detected-item-state');
 const detectedItemTip = document.getElementById('detected-item-tip');
 const translatableNodes = Array.from(document.querySelectorAll('[data-i18n]'));
 const labelNodes = Array.from(document.querySelectorAll('[data-label-key]'));
@@ -94,6 +93,7 @@ const languageButtons = Array.from(document.querySelectorAll('.lang-button'));
 let activeBinId = null;
 let detectionState = null;
 let overlayFlashing = false;
+let overlayMessageKey = 'scanHint';
 let currentLanguage = 'en';
 
 function getCurrentCopy() {
@@ -143,6 +143,12 @@ function syncDetectedCardAppearance(binId) {
   detectedItemIcon.innerHTML = bin.querySelector('svg')?.outerHTML ?? '';
 }
 
+function setOverlayMessage(messageKey) {
+  overlayMessageKey = messageKey;
+  overlay.dataset.i18n = messageKey;
+  overlay.textContent = getCurrentCopy()[messageKey] ?? '';
+}
+
 function setDetectedItemState(nextState) {
   detectionState = nextState;
 
@@ -151,7 +157,6 @@ function setDetectedItemState(nextState) {
     syncDetectedCardAppearance(null);
     detectedItemName.textContent = copy.waitingDetection;
     detectedItemJp.textContent = '';
-    detectedItemState.textContent = copy.scanHint;
     detectedItemTip.textContent = copy.scanHint;
     return;
   }
@@ -164,7 +169,6 @@ function setDetectedItemState(nextState) {
   syncDetectedCardAppearance(nextState.binId ?? null);
   detectedItemName.textContent = detectedLabel || copy.waitingDetection;
   detectedItemJp.textContent = detectedJp;
-  detectedItemState.textContent = nextState.matched ? copy.matchedState : copy.noMatchState;
   detectedItemTip.textContent = getTipText(nextState.className) || copy.scanHint;
 }
 
@@ -239,6 +243,7 @@ function setActiveBinById(binId) {
     bin.classList.toggle('active', bin.id === binId);
   });
   activeBinId = binId;
+  setOverlayMessage('noGarbage');
   setDetectedItemState({
     binId,
     className: getClassNameByBinId(binId),
@@ -290,6 +295,7 @@ async function predict() {
   const predictions = await model.predict(webcam.canvas);
 
   if (!predictions || predictions.length === 0 || maxPredictions === 0) {
+    setOverlayMessage('scanHint');
     showNoGarbageOverlay(true);
     clearActiveBins();
     return;
@@ -304,6 +310,7 @@ async function predict() {
 
   if (NO_GARBAGE_CLASSES.has(bestClassName)) {
     clearActiveBins();
+    setOverlayMessage('noGarbage');
     showNoGarbageOverlay(true);
     return;
   }
@@ -321,6 +328,7 @@ async function predict() {
     className: bestClassName,
     matched: false,
   });
+  setOverlayMessage('noMatchState');
   showNoGarbageOverlay(true);
 }
 
@@ -339,10 +347,12 @@ languageButtons.forEach((button) => {
 
 window.addEventListener('load', () => {
   clearActiveBins();
-  showNoGarbageOverlay(false);
+  setOverlayMessage(overlayMessageKey);
+  showNoGarbageOverlay(true);
   updateTranslations();
   init().catch((error) => {
     console.error('Teachable Machine initialization failed:', error);
+    setOverlayMessage('noGarbage');
     showNoGarbageOverlay(true);
   });
 });

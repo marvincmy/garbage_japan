@@ -251,7 +251,7 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.78),
     0 10px 24px rgba(46, 84, 35, 0.1);
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto;
   gap: 0.45rem;
 }
 
@@ -321,15 +321,13 @@ body {
 }
 
 .detected-main {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.8rem;
+  display: grid;
+  gap: 0.2rem;
 }
 
 .detected-body {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.9rem;
   min-height: 0;
 }
@@ -357,8 +355,6 @@ body {
 .detected-copy {
   min-width: 0;
   flex: 1 1 auto;
-  display: grid;
-  gap: 0.45rem;
 }
 
 .detected-title-stack {
@@ -379,21 +375,12 @@ body {
   color: #4f644b;
 }
 
-#detected-item-state {
-  flex-shrink: 0;
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--bin-accent) 18%, white);
-  color: color-mix(in srgb, var(--bin-icon-stroke) 78%, #223122);
-  font-size: 0.74rem;
-  font-weight: 700;
-}
-
 .detected-tip {
   margin: 0;
   color: #33502f;
   font-size: 0.84rem;
   line-height: 1.5;
+  width: 100%;
 }
 
 .bins-grid {
@@ -419,10 +406,10 @@ body {
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(237, 243, 232, 0.58));
   color: var(--text);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.1rem;
+  gap: 0.55rem;
   min-height: 0;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 200ms ease, background 180ms ease;
@@ -430,7 +417,6 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     0 10px 24px rgba(45, 67, 40, 0.1);
   backdrop-filter: blur(12px);
-  filter: grayscale(0.55) saturate(0.6) brightness(0.96);
 }
 
 .bin-glass {
@@ -459,8 +445,8 @@ body {
   width: 62px;
   height: 62px;
   flex-shrink: 0;
-  stroke: #2e462f;
-  fill: rgba(88, 122, 76, 0.18);
+  stroke: var(--bin-icon-stroke);
+  fill: var(--bin-icon-fill);
   stroke-width: 2.4;
   vector-effect: non-scaling-stroke;
 }
@@ -468,9 +454,9 @@ body {
 .bin-copy {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.18rem;
-  text-align: left;
+  text-align: center;
 }
 
 .bin .en {
@@ -640,14 +626,8 @@ body {
     min-height: 210px;
     padding: 0.8rem 0.85rem;
     border-radius: 16px;
-    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
     overflow: hidden;
-  }
-
-  .detected-main {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
   }
 
   .detected-body {
@@ -655,14 +635,14 @@ body {
   }
 
   .detected-icon {
-    width: 54px;
-    height: 54px;
+    width: 68px;
+    height: 68px;
     border-radius: 14px;
   }
 
   .detected-icon svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 
   #detected-item-name {
@@ -674,12 +654,6 @@ body {
     font-size: 0.78rem;
   }
 
-  #detected-item-state {
-    min-height: 2.05rem;
-    display: inline-flex;
-    align-items: center;
-  }
-
   .detected-tip {
     font-size: 0.78rem;
     min-height: 0;
@@ -689,10 +663,9 @@ body {
 
   .bin {
     min-height: 72px;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.15rem;
+    gap: 0.3rem;
     text-align: center;
     padding: 0.5rem 0.38rem;
     border-radius: 16px;
@@ -703,8 +676,8 @@ body {
   }
 
   .bin svg {
-    width: 34px;
-    height: 34px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
   }
 
