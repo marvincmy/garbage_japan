@@ -36,16 +36,17 @@
           </div>
         </section>
 
+        <div class="detected-card" aria-live="polite">
+          <p class="detected-eyebrow" data-i18n="detectedItemLabel">Detected Item</p>
+          <div class="detected-main">
+            <span id="detected-item-name" data-i18n="waitingDetection">Waiting for detection</span>
+            <span id="detected-item-state" data-i18n="scanHint">Show one item to the camera</span>
+          </div>
+          <p id="detected-item-tip" class="detected-tip" data-i18n="scanHint">Show one item to the camera</p>
+        </div>
+
         <section class="bins-panel" aria-label="Garbage categories">
           <h2 data-i18n="garbageTypes">Garbage Types</h2>
-          <div class="detected-card" aria-live="polite">
-            <p class="detected-eyebrow" data-i18n="detectedItemLabel">Detected Item</p>
-            <div class="detected-main">
-              <span id="detected-item-name" data-i18n="waitingDetection">Waiting for detection</span>
-              <span id="detected-item-state" data-i18n="scanHint">Show one item to the camera</span>
-            </div>
-            <p id="detected-item-tip" class="detected-tip" data-i18n="scanHint">Show one item to the camera</p>
-          </div>
           <div class="bins-grid">
             <button id="bin-burnable" class="bin" data-type="burnable" type="button" aria-label="Burnable - 燃えるごみ">
               <span class="bin-glass" aria-hidden="true"></span>
