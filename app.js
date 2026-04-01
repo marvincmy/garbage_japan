@@ -15,8 +15,23 @@ const BIN_ID_BY_CLASS = {
 
 const NO_GARBAGE_CLASSES = new Set(['nothing', 'human_face']);
 
+const CARE_TIPS = {
+  burnable_garbage:
+    '🗑️ Place in the designated Burnable Trash bag. Drain kitchen waste first. Soak up cooking oil with paper or cloth before disposal.',
+  'non-burnable':
+    '🪣 Place in the designated Non-Burnable Trash bag. Remove batteries before disposal. Wrap sharp items in paper for safety.',
+  glass_bottle:
+    '♻️ Remove caps & labels (plastic caps → burnable, metal caps → non-burnable). Rinse clean with water. Crush PET bottles vertically. Use the designated Empty Bottles & PET Bottles bag.',
+  oversized_garbage:
+    '📦 Pre-application & fee required. Call 092-731-1153 or apply online at the city portal. Not collected on regular garbage days.',
+  paper:
+    '📰 Separate into: newspapers, cardboard, and misc paper. Tie each type with string. Remove tape, clasps, and stickers from cardboard.',
+};
+
 const bins = Array.from(document.querySelectorAll('.bin'));
 const overlay = document.getElementById('no-garbage-overlay');
+const careTip = document.getElementById('care-tip');
+const careTipText = document.getElementById('care-tip-text');
 const webcamContainer = document.getElementById('webcam-container');
 let activeBinId = null;
 let overlayFlashing = false;
@@ -25,6 +40,8 @@ function clearActiveBins() {
   if (!activeBinId) return;
   bins.forEach((bin) => bin.classList.remove('active'));
   activeBinId = null;
+  careTip.hidden = true;
+  careTipText.textContent = '';
 }
 
 function setActiveBin(type) {
@@ -51,6 +68,19 @@ function setActiveBinById(binId) {
     bin.classList.toggle('active', bin.id === binId);
   });
   activeBinId = binId;
+
+  // Show care tip for the matched class
+  const matchedClass = Object.keys(BIN_ID_BY_CLASS).find(
+    (cls) => BIN_ID_BY_CLASS[cls] === binId
+  );
+  const tip = matchedClass ? CARE_TIPS[matchedClass] : null;
+  if (tip) {
+    careTipText.textContent = tip;
+    careTip.hidden = false;
+  } else {
+    careTip.hidden = true;
+    careTipText.textContent = '';
+  }
 }
 
 async function init() {
