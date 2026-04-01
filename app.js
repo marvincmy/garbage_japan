@@ -141,6 +141,8 @@ function setDetectedItemState(nextState) {
 function updateTranslations() {
   const copy = getCurrentCopy();
   document.title = copy.title;
+  document.documentElement.lang = currentLanguage;
+  document.body.dataset.language = currentLanguage;
 
   translatableNodes.forEach((node) => {
     const key = node.dataset.i18n;
