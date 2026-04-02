@@ -19,10 +19,10 @@ const PAGE_TITLE = 'Smart Trash Scanner / 關於將垃圾擺喺鏡頭前面就�
 
 const TRANSLATIONS = {
   en: {
-    title: 'SMART TRASH SCANNER',
+    title: 'Smart Trash Scanner',
     subtitle: 'Place one item in front of the camera to see the matching disposal category and handling tips.',
     noGarbage: 'No Garbage Detected',
-    continueScanning: 'Click here to continue scanning on the camera area',
+    continueScanning: 'Click Here to Continue Scanning on the Camera Area',
     garbageTypes: 'Garbage Types',
     detectedItemLabel: 'Detected Item',
     selectedItemLabel: 'Selected Item',
