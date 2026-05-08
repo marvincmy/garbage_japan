@@ -1,4 +1,4 @@
-const URL = 'https://teachablemachine.withgoogle.com/models/aER2QyV-b/';
+const URL = 'https://teachablemachine.withgoogle.com/models/TUIPT0RUA/';
 
 let model;
 let webcam;
@@ -9,6 +9,7 @@ const PREDICTION_INTERVAL_MS = 1000;
 const BIN_ID_BY_CLASS = {
   burnable_garbage: 'bin-burnable',
   'non-burnable': 'bin-non-burnable',
+  can: 'bin-non-burnable',
   glass_bottle: 'bin-glass-pet',
   oversized_garbage: 'bin-oversized',
   paper: 'bin-paper',
@@ -42,6 +43,8 @@ const TRANSLATIONS = {
         'Place in the designated Burnable Trash bag. Drain kitchen waste first. Soak up cooking oil with paper or cloth before disposal.',
       'non-burnable':
         'Place in the designated Non-Burnable Trash bag. Remove batteries before disposal. Wrap sharp items in paper for safety.',
+      can:
+        'Rinse clean and remove any food residue. Place in the designated Non-Burnable Trash bag. If a recycle bin is available, consider recycling the can instead of regular trash disposal.',
       glass_bottle:
         'Remove caps and labels. Plastic caps are burnable and metal caps are non-burnable. Rinse clean with water. Crush PET bottles vertically. Use the designated Empty Bottles and PET Bottles bag.',
       oversized_garbage:
@@ -74,6 +77,8 @@ const TRANSLATIONS = {
         '請放入指定的可燃垃圾袋。廚餘垃圾請先瀝乾。食用油請先用紙或布吸附後再丟棄。',
       'non-burnable':
         '請放入指定的不可燃垃圾袋。丟棄前請先取出電池。尖銳物品請先用紙包好以確保安全。',
+      can:
+        '請先沖洗乾淨並擦乾。放入指定的不可燃垃圾袋。如有回收桶可用，請優先將鐵罐放入回收桶進行回收。',
       glass_bottle:
         '請先取下瓶蓋與標籤。塑膠瓶蓋屬於可燃垃圾，金屬瓶蓋屬於不可燃垃圾。請沖洗乾淨，並將 PET 瓶縱向壓扁後投入指定回收袋。',
       oversized_garbage:
