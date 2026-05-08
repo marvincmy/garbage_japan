@@ -354,6 +354,17 @@ body {
   vector-effect: non-scaling-stroke;
 }
 
+.question-mark-icon {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--bin-accent, #78a16f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-family: "Space Grotesk", sans-serif;
+}
+
 .detected-copy {
   min-width: 0;
   flex: 1 1 auto;

@@ -91,6 +91,7 @@ const webcamContainer = document.getElementById('webcam-container');
 const detectedCard = document.querySelector('.detected-card');
 const detectedEyebrow = document.querySelector('.detected-eyebrow');
 const detectedItemIcon = document.getElementById('detected-item-icon');
+const detectedItemQuestionMark = document.getElementById('detected-item-question-mark');
 const detectedItemName = document.getElementById('detected-item-name');
 const detectedItemJp = document.getElementById('detected-item-jp');
 const detectedItemTip = document.getElementById('detected-item-tip');
@@ -148,12 +149,16 @@ function syncDetectedCardAppearance(binId) {
 
   if (!bin) {
     detectedCard.removeAttribute('data-type');
-    detectedItemIcon.innerHTML = '';
+    detectedItemIcon.innerHTML = '<div id="detected-item-question-mark" class="question-mark-icon" aria-hidden="true">?</div>';
+    detectedItemQuestionMark.style.display = 'block';
     return;
   }
 
   detectedCard.dataset.type = bin.dataset.type;
   detectedItemIcon.innerHTML = bin.querySelector('svg')?.outerHTML ?? '';
+  if (detectedItemQuestionMark) {
+    detectedItemQuestionMark.style.display = 'none';
+  }
 }
 
 function setOverlayMessage(messageKey) {
